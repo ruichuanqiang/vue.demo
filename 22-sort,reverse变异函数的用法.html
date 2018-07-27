@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./vue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <ul>
+      <li v-for="(v,index) in comment">
+        {{v.id}}- {{v.content}}
+        <button v-on:click="remove(index)">删除</button>
+      </li>
+    </ul>
+    <textarea v-model="current_content" id="" cols="30" rows="10"></textarea>
+    <button v-on:click="getpush('end')">发表到后面</button>
+    <button v-on:click="getpush('pre')">发表到前面</button>
+    <br>
+    <button v-on:click="del('last')">删除最后一条</button>
+    <button v-on:click="del('first')">删除最前面一条</button>
+    <br>
+    <button v-on:click="sort">排序</button>
+    <button v-on:click="reverse">翻转</button>
+    <button v-on:click="null1">清空</button>
+
+  </div>
+</body>
+<script>
+  const vm = new Vue({
+    el: "#app",
+    data: {
+      current_content: '',
+      comment: [{
+          id: 1,
+          content: "小明"
+        },
+        {
+          id: 4,
+          content: "李四"
+        },
+        {
+          id: 2,
+          content: "王五"
+        },
+        {
+          id: 3,
+          content: "小黄"
+        },
+      ],
+    },
+    methods: {
+      null1() {
+        this.comment = '';
+      },
+      reverse() {
+        this.comment.reverse();
+      },
+      sort() {
+        this.comment.sort((a, b) => {
+          return a.id > b.id
+        })
+      },
+      remove(index) {
+        this.comment.splice(index, 1);
+      },
+      getpush(type) {
+        // 添加的是个对象
+        let id = this.comment.length + 1
+        let content = {
+          id: id,
+          content: this.current_content
+        }
+        switch (type) {
+          case 'end':
+            this.comment.push(content)
+            break;
+          case 'pre':
+            this.comment.unshift(content)
+            break;
+        }
+        this.current_content = ''
+      },
+
+      del(type) {
+        switch (type) {
+          case 'last':
+            this.comment.pop()
+            break;
+          case 'first':
+            this.comment.shift()
+            break;
+        }
+      }
+    }
+  })
+</script>
+
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./vue.js"></script>
+</head>
+<body>
+  <div id="app">
+    <!-- 绑定is属性可以动态添加组件设置页面布局 -->
+    <div v-bind:is="formType"></div>
+    <input type="radio" v-model="formType" value="parent">文本框
+    <input type="radio" v-model="formType" value="child">文本域
+  </div>
+</body>
+<script>
+  var parent = {template:`<div><input/></div>`};
+  var child = {template:`<div><textarea></textarea></div>`}
+  new Vue({
+    el : "#app",
+    data: {
+      formType:""
+    },
+    components:{parent,child}
+  })
+</script>
+</html>

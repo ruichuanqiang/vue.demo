@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./vue.js"></script>
+  <script src="./vuex.js"></script>
+  <script src="./node_modules/axios/dist/axios.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <lists></lists>
+  </div>
+</body>
+<script type="text/x-template" id="lists">
+  <div>
+    <table border="1" width="90%">
+      <tr>
+        <th>编号</th>
+        <th>商品</th>
+        <th>价格</th>
+        <th>数量</th>
+        <th>合计</th>
+        <th>操作</th>
+      </tr>
+      <tbody>
+        <tr v-for="v in goods">
+          <td>{{v.id}}</td>
+          <td>{{v.title}}</td>
+          <td>{{v.price}}</td>
+          <td>
+            <input type="text" v-model="v.num">
+          </td>
+          <td>{{v.totalPrice}}</td>
+          <td>
+            <button @click="del(v.id)">删除</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h1>总价：{{totalPrice}}</h1>
+  </div>
+</script>
+<script>
+  let lists = {
+    template: "#lists",
+    // 使用计算属性获取到state中的数据
+    computed: {
+      goods() {
+        return this.$store.getters['cart/pricetotal']
+      },
+      totalPrice() {
+        return this.$store.getters['cart/totalPrice']
+      }
+    },
+    methods: {
+      del(id) {
+        this.$store.commit('cart/delete', {
+          id
+        })
+      }
+    }
+  }
+  const cartSolne = {
+    namespaced: true,
+    state: {
+      goods: []
+    },
+    // 使用getters计算商品总价
+    getters: {
+      totalPrice(state) {
+        let totalPrice = 0
+        state.goods.forEach((v) => {
+          totalPrice += v.price * v.num
+        });
+        return totalPrice
+      },
+      pricetotal(state) {
+        let goods = state.goods
+        goods.forEach((v) => {
+          v.totalPrice = v.num * v.price
+        })
+        return goods
+      }
+    },
+    mutations: {
+      delete(state, param) {
+        let k
+        for (let i = 0; i <= state.goods.length; i++) {
+          if (state.goods[i].id === param.id) {
+            k = i
+            break
+          }
+        }
+        state.goods.splice(k, 1);
+      },
+      getgoods(state, param) {
+        state.goods = param.goods
+      }
+    },
+    actions: {
+      // 自定义函数方法,参数为store
+      loadgoods(store) {
+        axios.get('./56.php')
+          .then((res) => {
+            // 触发mothods中的方法
+            store.commit('getgoods', {
+              goods: res.data
+            })
+          })
+      }
+    }
+  }
+  let store = new Vuex.Store({
+    modules: {
+      cart: cartSolne
+    }
+  })
+
+  const app = new Vue({
+    el: "#app",
+    data: {},
+    components: {
+      lists
+    },
+    store,
+    // 挂载的时候触发actions中的方法
+    mounted() {
+      this.$store.dispatch('cart/loadgoods')
+    }
+
+  })
+</script>
+
+</html>

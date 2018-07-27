@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./vue.js"></script>
+  <script src="./vue-router.js"></script>
+</head>
+<body>
+  <div id="app">
+    <router-link to="/parent">跳转1</router-link>
+    <router-link to="/child">跳转2</router-link>
+
+    <router-view></router-view>
+  </div>
+</body>
+<script type="text/x-template" id="parent">
+  <div>
+    <h1>我是parent组件模板</h1>
+   {{id}}
+  </div>
+</script>
+<script type="text/x-template" id="child">
+  <div>
+    <h1>我是child组件模板</h1>
+  </div>
+</script>
+<script>
+  const parent = {template:"#parent",
+    data() {
+      return {
+        id : ''
+      }
+    },
+    mounted () {
+      this.id = this.$route.params.id
+      if(!this.id){
+        this.id = 1
+      }
+    }
+  }
+  const child = {template:"#child"}
+  let router =  new VueRouter({
+    routes : [
+      {path:"/parent/:id?",component:parent},
+      {path:"/child",component:child}
+    ]
+  })
+  new Vue({
+    el:"#app",
+    data: {},
+    router 
+  })
+</script>
+</html>

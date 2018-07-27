@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./vue.js"></script>
+  <script src="./vuex.js"></script>
+</head>
+<body>
+  <div id="app">
+    <!-- 自定义组件 -->
+    <lists></lists> 
+
+    <!-- 注意：组件中没有驼峰命名规范，使用"-"来表示 -->
+   <foot-cart></foot-cart>
+  </div>
+  <script type="text/x-template" id="lists">
+    <div>
+      <h1>购物车</h1>
+      <table border="1" width="90%">
+        <tr><th>编号</th><th>商品</th><th>价格</th><th>数量</th><th>合计</th><th>操作</th></tr>
+        <tbody>
+          <tr v-for="v in goods">
+            <td>{{v.id}}</td>
+            <td>{{v.title}}</td>
+            <td>{{v.price}}</td>
+            <td>
+              <input type="text" style="outline:none;border:none" v-model="v.num" >
+            </td>
+            <td>{{v.totalPrice}}</td>
+            <td><button @click="del(v.id)">删除</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </script>
+  <script type="text/x-template" id="footCart">
+    <div>
+      总价:{{totalPrice}}
+    </div>
+  </script>
+</body>
+<script>
+ let footCart = {template:"#footCart",
+    computed : {
+      totalPrice() {
+        return this.$store.getters.totalPrice || 0
+      }
+    }
+  }
+  let lists = {template:"#lists",
+    computed : {  
+      goods () {
+        return this.$store.getters.goods
+      }
+    },
+    // 点击后触发这个函数
+    methods : {
+      del (id) {
+        // 通过commit()方法触发mutations()中的方法，第一个参数是函数名
+        this.$store.commit('del1',{id})
+      }
+    }
+  }
+  let store = new Vuex.Store({
+    state :{
+      goods : [
+        
+      ]
+    },
+    getters : {
+      totalPrice(state){
+        // 初始化总价
+        let totalPrice = 0
+        store.state.goods.forEach((v) => {
+          totalPrice += v.num * v.price
+        })
+        return totalPrice
+      },
+      goods : (state) => {
+        let goods = store.state.goods
+        goods.forEach((v) => {
+            v.totalPrice = v.num * v.price
+        });
+        return goods
+      }
+    },
+    mutations : {
+      // 删除购物车中的数据
+      del1(state,param) {
+        let k
+        for (let i = 0 ;i <= state.goods.length - 1;i++){
+          if(state.goods[i].id == param.id) {
+            k = i;
+            break;
+          }
+        }
+        state.goods.splice(k,1)
+      }
+    }
+  })
+ const app =  new Vue({
+    el : "#app",
+    data : {},
+    components :{
+      lists,footCart
+    },
+    store
+  })
+
+
+  // 总结：在vuex中操作state中的数据，我们只有在mutation中进行业务处理，
+  // 通过绑定的事件处理函数并且由commit()触发mutation方法
+</script>
+</html>

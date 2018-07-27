@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./vue.js"></script>
+</head>
+<body>
+  <div id="app">
+    <child :lists="news" hd= "cms"></child>
+  </div>
+  <script type="text/x-template" id="child"> 
+    <ul>
+      {{hd}}
+      <li v-for="v of lists">{{v.title}}</li>
+    </ul>
+  </script>
+</body>
+<script>
+  var child = {template :"#child",
+  data () {
+    return {
+    }
+  },
+  props : ['lists','hd']
+
+  };
+
+  new Vue({
+    el : "#app",
+    data: {
+      news : [
+        {title:"前端开发"},
+        {title : "java开发"}
+      ]
+    },
+    components :{child}
+  })
+</script>
+</html>

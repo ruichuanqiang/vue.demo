@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./vue.js"></script>
+  <script src="./vuex.js"></script>
+</head>
+<body>
+  <div id="app">
+    <!-- 自定义组件 -->
+    <lists></lists> 
+    
+  </div>
+  <script type="text/x-template" id="lists">
+    <div>
+      <h1>购物车</h1>
+      <table border="1" width="90%">
+        <tr><th>编号</th><th>商品</th><th>价格</th><th>数量</th><th>合计</th></tr>
+        <tbody>
+          <tr v-for="v in goods">
+            <td>{{v.id}}</td>
+            <td>{{v.title}}</td>
+            <td>{{v.price}}</td>
+            <td>{{v.num}}</td>
+            <td>{{v.totalPrice}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <h1>总价:{{totalPrice}}</h1>
+    </div>
+  </script>
+</body>
+<script>
+  let lists = {template:"#lists",
+    computed : {
+      totalPrice() {
+        return this.$store.getters.totalPrice || 0
+      },
+      goods () {
+        return this.$store.getters.goods
+      }
+    }
+  }
+  let store = new Vuex.Store({
+    state :{
+      goods : [
+        {id: 1,title : "iphone7 Plus" ,price : 6999,num : 3},
+        {id: 2,title : "iphone8 Plus" ,price : 8999,num : 5}
+      ]
+    },
+    getters : {
+      totalPrice : (state)=> {
+        // 初始化总价
+        let totalPrice = 0
+        store.state.goods.forEach((v) => {
+          totalPrice += v.num * v.price
+        })
+        return totalPrice
+      },
+      goods : (state) => {
+        let goods = state.goods
+        goods.forEach((v) => {
+            v.totalPrice = v.num * v.price
+        });
+        return goods
+      }
+    }
+  })
+ const app =  new Vue({
+    el : "#app",
+    data : {},
+    components :{lists},
+    store
+  })
+</script>
+</html>

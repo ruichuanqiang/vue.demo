@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./vue.js"></script>
+</head>
+<body>
+  <div id="app">
+    <div @click.self="box" :style="{border :'1px solid red'}">
+      <a href="www.baidu.com" @click.prevent.stop.once="links">点击一下</a>
+    </div>
+  </div>
+</body>
+<script>
+
+  // stop 阻止冒泡事件
+  // self 点击自己本身才会触发
+  // prevent 阻止默认行为
+  // capture 事件捕获
+  // 事件修饰符可以链式书写
+  //once 只作用一次
+  //lazy 懒更新（鼠标移除之后才会更新）
+  //trim  消除空格
+  const vm = new Vue({
+    el : "#app",
+    data : {
+    },
+    methods: {
+      links () {
+        alert(1);
+      },
+      box() {
+        alert(2);
+      }
+    }
+  })
+</script>
+</html>

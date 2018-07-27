@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./vue.js"></script>
+</head>
+<body>
+  <div id="app">
+    <ul>
+      <li v-for= "v in comment">
+        {{v.content}}
+      </li>
+    </ul>
+    <textarea v-model="current_content" id="" cols="30" rows="10"></textarea>
+    <button v-on:click="getpush">发表</button>
+  </div>
+</body>
+<script>
+  const vm = new Vue({
+    el : "#app",
+    data : {
+      current_content : '',
+      comment : [
+        {content:"小明"},
+        {content:"李四"},    
+        ],
+    },
+    methods : {
+      getpush () {
+        // 添加的是个对象
+        let content = {content : this.current_content}
+        this.comment.push(content)
+        this.current_content = ''
+      }
+    }
+  })
+</script>
+</html>

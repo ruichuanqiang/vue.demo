@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./vue.js"></script>
+</head>
+<body>
+  <div id="app">
+    <button @click="type=!type">点击</button>
+    <!-- 动画必须要有name值 -->
+    <transition name="hd">   
+      <h1 v-if="type">我是h1标签</h1>  
+    </transition>
+  </div>
+</body>
+<script>
+  new Vue({
+    el : "#app",
+    data : {
+      type:""
+    }
+  })
+</script>
+
+<!-- v-enter   准备显示的类
+     v-enter-active 显示过程中的类
+     v-enter-to 显示后的类
+
+     v-leave 准备隐藏的类
+     v-leave-active 隐藏过程中的类
+     v-leave-to 隐藏后的类
+
+     v指的的是transition动画标签中定义的name变量
+-->
+<style>
+  .hd-enter-active {
+    animation: show-in 1s;
+    transition: all 1s
+  }
+  .hd-leave-active {
+    animation: hide-out 1s;
+    transition: all 1s
+  }
+  .hd-enter,.hd-leave-to {
+    opacity: 0
+  }
+  @keyframes show-in {
+    0% {
+      transform : translate(200px,0)
+    }
+    100% {
+      transform: translate(0,0)
+    }
+  }
+  @keyframes hide-out {
+    0% {
+      transform: translate(0,0)
+    }
+    100% {
+      transform: translate(200px,0)
+    }
+  }
+</style>
+</html>

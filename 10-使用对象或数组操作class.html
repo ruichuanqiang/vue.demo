@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .color {
+      color : red
+    }
+    .font {
+      font-size : 18px
+    }
+    .blue {
+      color :blue
+    }
+  </style>
+  <script src="./vue.js"></script>
+</head>
+<body>
+  <div id="app">
+    <h1 :class ="{color:true,font:true}">我变色了吗</h1>
+    <h1 :class= "hd">第二种方法</h1>
+    <hr>
+    <h2 :class = "['color','font']">数组的样式呢</h2>
+    <h2 :class= "[success]">数组变量的形式</h2>
+    
+  </div>
+</body>
+<script>
+  var vue = new Vue({
+    el : " #app",
+    data : {
+      hd : {color:false,font:true},  
+      success : ['color','font'],
+      success : 'blue'
+    }
+  })
+</script>
+</html>

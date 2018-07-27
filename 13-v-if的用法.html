@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./vue.js"></script>
+</head>
+<body>
+  <div id="app">
+    <input type="text" v-model="age">
+    <span v-if="age<20">小孩</span>
+    <span v-else-if="age<30">青年</span>
+    <span v-else-if="age<50">中年</span>
+    <span v-else>老年</span>
+    <hr>
+
+    <input type="checkbox" v-model="hd">接收协议
+    <br>
+    <span v-if="hd === false">请先确认</span>
+    <span v-else>注册</span>
+  </div>
+</body>
+<script>
+  const vm = new Vue({
+    el : "#app",
+    data : {
+      age : 0,
+      hd : false
+    }
+  })
+</script>
+</html>

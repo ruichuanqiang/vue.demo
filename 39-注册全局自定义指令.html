@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./vue.js"></script>
+  <!-- js动画库 -->
+  <script src="./velocity.min.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <span v-star>前端开发</span>
+    <input type="text" v-model="title" v-hd="title">
+  </div>
+</body>
+<script>
+  // 自定义指令钩子
+  /* bind     指令绑定到元素上执行
+     inserted 元素插入到父节点上调用
+     update   元素绑定在表单上，表单更新后调用
+  */
+// 定义全局指令
+// 第一个参数是绑定的自定义指令名称，第二个参数是个对象（指令的方法）,
+// 第一个参数是绑定的元素，第二个参数是指令里面的参(是个对象)
+  Vue.directive("star",function(el,dom){        //bind,update可以简写
+    console.log(dom);           
+  })
+  Vue.directive("hd",{
+    update(el,dom){
+      console.log(dom.value)
+
+    }
+  })
+  new Vue({
+    el : "#app",
+    data : {title:"我是标题"}
+  })
+</script>
+</html>

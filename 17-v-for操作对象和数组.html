@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./vue.js"></script>
+</head>
+<body>
+  <div id="app">
+    <li v-for="(item,key,index) in news">
+    {{index}}- {{key}}-{{item}} 
+    </li>
+    <table border="1" width="100%">
+      <tr v-for="v in 20">
+        <td>{{v}}</td>
+      </tr>
+      
+    </table>
+  </div>
+</body>
+<script>
+  const vm = new Vue({
+    el : "#app",
+    data : {
+     news : {
+       name : "zs",
+       age : 18,
+       height : 180
+     }
+    }
+  })
+</script>
+</html>

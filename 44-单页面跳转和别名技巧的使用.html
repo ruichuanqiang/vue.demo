@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./vue.js"></script>
+  <script src="./vue-router.js"></script>
+</head>
+<body>
+  <div id="app">
+    <router-view></router-view>
+  </div>
+</body>
+<script type="text/x-template" id="home">
+  <div>
+    <ul>
+      <li v-for="v in news">
+        <router-link :to="{name:'content',params:{id:v.id}}">{{v.title}}</router-link>
+      </li>
+      <router-view></router-view>
+    </ul>
+  </div>
+</script>
+<script type="text/x-template" id="content">
+  <div>
+    <h1>{{filed.content}}</h1>
+  </div>
+</script>
+<script>
+  var data = [
+    {id:1,title: "web前端开发",content:"这是web前端内容..."},
+    {id:2,title: "Java开发",content:"这是Java内容..."}
+  ]
+  const home = {template:'#home',
+    data() {
+      return {
+        news : data
+      }
+    }
+  }
+  const content = {template:"#content",
+  data () {
+    return {
+      filed : {}
+    }
+  },
+  mounted() {
+    var id = this.$route.params.id
+    for (let i = 0 ;i <= data.length-1; i++) {
+      if(data[i].id == id) {
+        this.filed = data[i];
+      }
+    }
+  }
+  }
+  let router = new VueRouter({
+    routes : [
+      {path : '/',component:home,children:[
+         {path : '/content/:id',component:content,name:"content"},
+      ]},
+     
+    ]
+  })
+  new Vue({
+    el:"#app",
+    data : {},
+    router
+  })
+</script>
+</html>

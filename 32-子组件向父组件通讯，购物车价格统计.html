@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./vue.js"></script>
+</head>
+<body>
+  <div id="app">
+    <child :lists="goods" @fn="total"></child>
+    总计:{{totalPrice}}
+  </div>
+  <script type="text/x-template" id="child">
+    <table border="1" width="90%">
+      <tr>
+        <th>商品名称</th>
+        <th>商品价格</th>
+        <th>商品数量</th>
+      </tr>
+      <tbody>
+        <tr v-for="(v,k) in lists">
+          <td>{{v.title}}</td>
+          <td>{{v.price}}</td>
+         <input type="text" v-model="v.num" @blur="sum">
+        </tr>
+      </tbody>
+    </table>
+  </script>
+</body>
+<script>
+  var child = {
+    template: "#child",
+    data () {
+      return {}
+    },
+    props : ['lists'],
+    methods : {
+      sum (){
+        this.$emit('fn')
+      }
+    }
+  }
+  new Vue({
+    el : "#app",
+    components:{child},
+    mounted () {
+      this.total()
+    },
+    data : {
+      totalPrice : 0,
+      goods : [
+        {title:"苹果7",price:100,num :1},
+        {title:"电脑",price:200,num :2},
+        {title:"苹果6",price:50,num :2}
+      ]
+    },
+    
+    methods :{
+      total () {
+      // 总价先初始化
+      this.totalPrice = 0,
+      // 遍历商品
+      this.goods.forEach((v) => {
+        this.totalPrice += v.num *v.price
+      });
+      }
+    }
+  })
+</script>
+</html>

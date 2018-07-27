@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./vue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <child></child>
+  </div>
+  <script type="text/x-template" id="childs">
+    <ul>
+      <li v-for="(v,index) in news">{{v.title}}
+        <button @click="del(index)">删除</button>
+        <hr>
+      </li>
+
+    </ul>
+  </script>
+</body>
+<script>
+  var child = {
+    template: '#childs',
+    data() {
+      return {
+        news: [{
+            title: '前端开发'
+          },
+          {
+            title: 'Java开发'
+          },
+          {
+            title: 'PHP开发'
+          }
+        ]
+      }
+    },
+    methods: {
+      del(index) {
+        this.news.splice(index, 1);
+      }
+    }
+  };
+  new Vue({
+    el: "#app",
+    data: {},
+    components: {
+      child
+    }
+  })
+</script>
+
+</html>

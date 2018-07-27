@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./vue.js"></script>
+</head>
+<body>
+  <div id="app">
+    <h1 v-if="status === true">我是h1标签</h1>
+    <h2 v-show="status">我是h2标签</h2>
+    <hr>
+    <input type="checkbox" v-model="status">
+  </div>
+</body>
+<script>
+  const vm = new Vue({
+    el : "#app",
+    data : {
+      status : true
+    }
+  })
+</script>
+</html>

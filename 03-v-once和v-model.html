@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .red {
+            color: red
+        }
+    </style>
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h1 v-bind:class="color">{{title}}</h1>
+        <input type="text" v-model = "title">
+        <h2 v-once>{{ title}}</h2>
+    </div>
+</body>
+<script>
+    var vue = new Vue({
+        el : "#app",
+        data : {
+            title : "我是h1中的数据",
+            color : "red"
+        }
+    })
+</script>
+</html>

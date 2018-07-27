@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./vue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <span v-star="color">标题</span>
+    <input type="text" v-model="color" v-focus>
+    <h1 v-hide="false">我是h1标签</h1>
+  </div>
+</body>
+<script>
+  new Vue({
+    el: "#app",
+    data: {
+      color: ''
+    },
+    directives: {
+      star(el, dom) { //同时用到bind和update，我们使用函数方法简写
+        var color = dom.value ? dom.value : "red"
+        el.style.color = color
+        console.log(dom)
+        // el.style.cssText = "color:" + color
+      },
+      focus: {
+        inserted(el, dom) {
+          el.focus();
+        }
+      },
+      hide(el, dom) {
+        if (dom.value) {
+          // el.style.cssText = "display : none"
+          el.style.display = "none"
+        }
+
+      }
+    }
+  })
+</script>
+
+</html>

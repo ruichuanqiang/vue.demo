@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./vue.js"></script>
+  <script src="./vuex.js"></script>
+</head>
+<body>
+  <div id="app">
+    {{$store.state.count}}
+    <button @click = "fn">点击一下</button>
+    <h1>{{$store.getters.get}}</h1>
+  </div>
+</body>
+<script>
+  const store = new Vuex.Store({
+    state : {
+      count : 0,
+      lists : [
+        {title : 'iphone 7 ',type: true},
+        {title : 'iphone 8 ',type: true},
+        {title : 'iphone 9 ',type: false}
+      ]
+    },
+    mutations : {
+      add(state,param) {
+        state.count += param.num
+      }
+    },
+    getters : {
+      get(state){
+        return state.lists.filter(v => !v.type).length
+      }
+    }
+  })
+
+  new Vue({
+    el : "#app",
+    data : {},
+    store,
+    methods : {
+      fn() {
+        this.$store.commit("add",{num:2})
+      }
+    }
+  })
+</script>
+</html>

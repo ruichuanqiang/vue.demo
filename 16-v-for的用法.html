@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./vue.js"></script>
+</head>
+<body>
+  <div id="app">
+    <table border="1">
+      <tr>
+        <th>序号</th>
+        <th>编号</th>
+        <th>标题</th>
+        <th>姓名</th>
+      </tr>
+      <tbody>
+        <tr v-for="(item,index) of news">
+          <td>{{index +1}}</td>
+          <td>{{item.id}}</td>
+          <td>{{item.title}}</td>
+          <td>{{name}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+<script>
+  const vm = new Vue({
+    el : "#app",
+    data : {
+      name :"小芮",
+      news : [
+        {id : 3,title:"www.baidu.com"},
+        {id : 4,title:"www.itcast.com"}
+      ]
+    }
+  })
+</script>
+</html>

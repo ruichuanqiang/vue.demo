@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./vue.js"></script>
+  <script src="./vuex.js"></script>
+  <script src="./node_modules/axios/dist/axios.js"></script>
+</head>
+<body>
+  <div id="app">
+    <lists></lists>
+    <foot-price></foot-price>
+  </div>
+</body>
+<script type="text/x-template" id="lists">
+  <div>
+    <table border="1" width="90%">
+      <tr><th>编号</th><th>商品</th><th>价格</th><th>数量</th><th>合计</th><th>操作</th></tr>
+      <tbody>
+        <tr v-for="v in news">
+          <td>{{v.id}}</td>
+          <td>{{v.title}}</td>
+          <td>{{v.price}}</td>
+          <td>
+
+            <input type="text" v-model="v.num">
+          </td>
+          <td>{{v.totalPrice}}</td>
+          <td><button @click="del(v.id)">删除</button></td>
+        </tr>
+        
+      </tbody>
+    </table>
+  </div>
+</script>
+<script type="text/x-template" id="footPrice">
+  <div>
+    <h1>总价:{{totalPrice}}</h1>
+  </div>
+</script>
+<script>
+  let footPrice = {template:"#footPrice",
+    computed : {
+      totalPrice() {
+        // 计算getters中的totalPrice
+        return this.$store.getters.totalPrice || 0
+      }
+    }
+  }
+  let lists = {template: "#lists",
+    computed :　{
+      news () {
+        // 计算getters中的news
+        return this.$store.getters.news
+      }
+    },
+    methods : {
+      del(id) {
+        // 触发mutations中的方法,第一个参数是函数名，是个字符串
+        this.$store.commit('del',{id})
+      }
+    }
+  }
+  var store = new Vuex.Store({ 
+      state : {
+        news : []
+      },
+    // 获取state的数据
+    getters: {
+      totalPrice(state) {
+        // 先初始化totalPrice总价
+        let totalPrice = 0
+        // 遍历state中news中数据
+        state.news.forEach((v) => {
+           totalPrice += v.price* v.num 
+        });
+        return totalPrice;
+      },
+      news (state) {
+        let goods = store.state.news
+        goods.forEach((v)=>{
+          v.totalPrice = v.price * v.num
+        })
+        return goods
+      }
+    },
+    // 删除购物车中的数据
+    mutations : {
+      del(state,param) {
+        let k
+        for(var i = 0 ; i <=state.news.length;i++){
+          if(state.news[i].id === param.id){
+            k = i
+            break
+          }
+        }
+        state.news.splice(k,1)
+      },
+      setgoods(state,param) {
+        state.news = param.goods
+      }
+    },
+    // 异步抓取数据
+    actions : {
+      // 这边store 是vuex的实例对象
+      loadGood(store) {
+        axios.get('53.php').then(function(res){
+          store.commit('setgoods',{goods:res.data})
+        })
+      }
+    }
+  })
+
+  var app = new Vue({
+    el : "#app",
+    data : {},
+    components :{lists,footPrice},
+    store,
+    mounted () {
+      // 在挂载的时候使用dispatch()触发
+      this.$store.dispatch('loadGood')
+    }
+  })
+</script>
+</html>

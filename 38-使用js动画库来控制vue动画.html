@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./vue.js"></script>
+  <!-- js动画库 -->
+  <script src="./velocity.min.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <button @click="type=!type">点击</button>
+    <!-- 动画必须要有name值 -->
+    <transition @before-enter="beforeEnter" @enter="enter" @leave="leave" :css="false">
+      <h1 v-if="type">我是h1标签</h1>
+    </transition>
+  </div>
+</body>
+<script>
+  new Vue({
+    el: "#app",
+    data: {
+      type: ""
+    },
+    methods: {
+      beforeEnter(el) {
+        el.style.opacity = 0
+      },
+      enter(el,fn) {
+        Velocity(el,{opacity:1},{duration:2000,complete:fn})
+
+      },
+      leave(el,fn) {
+        Velocity(el,{opacity:0},{duration:2000,complete:fn})
+      }
+    },
+
+  })
+</script>
+</html>

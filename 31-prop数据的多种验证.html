@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./vue.js"></script>
+</head>
+<body>
+  <div id="app">
+    <parent :lists= "news" :show-del-button="true"></parent>
+  </div>
+  <script type="text/x-template" id="parent">
+    <div>
+      <li v-for="(v,k) of lists" >
+        {{v.title}}
+         <button @click="del(k)" v-if="showDelButton">删除</button>
+      </li>   
+    </div>
+  </script>
+</body>
+<script>
+  var parent = {template:"#parent",
+    data () {
+      return{}
+    },
+    methods :{
+      del(k) {
+        vm.news.splice(k,1)
+      }
+    },
+    props :{
+      lists : {
+        type :Array,
+
+      },
+      showDelButton : {
+        type : Boolean,
+        required:true
+      }
+    }
+  };
+  const vm = new Vue({
+    el : "#app",
+    data :{
+      news : [
+        {title:"web前端"},
+        {title:"java开发"},
+        {title:"php开发"}
+      ]
+    },
+    components:{parent}
+  })
+</script>
+</html>

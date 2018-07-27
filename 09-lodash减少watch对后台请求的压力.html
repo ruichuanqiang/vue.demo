@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./vue.js"></script>
+  <script src="./node_modules/axios/dist/axios.js"></script>
+  <script src="./node_modules/lodash/lodash.js"></script>
+</head>
+<body>
+  <div id="app">
+    <input type="text" v-model= "word">
+    <h1>{{result}}</h1>
+  </div>
+</body>
+<script>
+  var vue = new Vue({
+    el : "#app",
+    watch : {
+     word : _.debounce(      //_.debounce方法，第一个参数就是func
+      function (newV,oldV) {   
+        axios.get('8.php?word='+newV)
+        .then(function(res){
+          console.log(res);
+          vue.result = res.data;
+        })
+      },3000
+     )
+    },
+    data : {
+      word : '',  //初始化
+      result : ''
+    }
+  })
+</script>
+</html>
